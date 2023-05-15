@@ -8,9 +8,9 @@ Before running the script, ensure that you have the following:
 
 - Python 3.x installed on your system
 - The required Python libraries installed. You can install them using the following command:
-    ```bash
-    pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client pyserial python-dateutil
-    ```
+```bash
+pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-python-client pyserial python-dateutil
+```
 
 ## Setup
 
