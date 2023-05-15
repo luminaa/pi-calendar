@@ -1,6 +1,10 @@
 import datetime
 import os
 import pickle
+import serial.tools.list_ports
+import serial
+import time
+import sys
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
@@ -26,23 +30,62 @@ def authenticate():
     return creds
 
 def get_next_event(service):
-    now = datetime.datetime.utcnow().isoformat() + 'Z'  # Get current date and time in UTC
+    now = datetime.datetime.utcnow().isoformat() + 'Z'
     events_result = service.events().list(calendarId='primary', timeMin=now,
                                           maxResults=1, singleEvents=True,
                                           orderBy='startTime').execute()
     events = events_result.get('items', [])
     if not events:
-        print('No upcoming events found.')
+        return False, None, None, None
     else:
         event = events[0]
         start = event['start'].get('dateTime', event['start'].get('date'))
-        print(f'Next event: {event["summary"]}')
-        print(f'Start time: {start}')
+        end = event['end'].get('dateTime', event['end'].get('date'))
+        start_time = datetime.datetime.fromisoformat(start).strftime('%H:%M')
+        end_time = datetime.datetime.fromisoformat(end).strftime('%H:%M')
+        return True, event['summary'], start_time, end_time
+
+def findport():
+    ports = serial.tools.list_ports.comports()
+    portsList = []
+
+    for i in ports: # make a list of ports
+        portsList.append(str(i))
+    print('Found ports: {}'.format(portsList))
+
+    if not portsList: # if no ports are available
+        print("No ports available")
+        return None
+
+    val = str(input("\nSelect PORT: COM "))
+
+    for x in range(0, len(portsList)):
+        if portsList[x].startswith("COM" + val):
+            portVar = "COM" + val
+            return portVar
+    print("Port not found")
+
+def output(portVar, summary, start, end):
+    screen = serial.Serial(portVar, 9600)
+    time.sleep(2)
+    display_text = f"{start} - {end}\n{summary}\n"
+
+    if screen.is_open:
+        screen.write(display_text.encode())
+
+    screen.close()
 
 def main():
     creds = authenticate()
     service = build('calendar', 'v3', credentials=creds)
-    get_next_event(service)
+    
+    while True:
+        boole, summary, start, end = get_next_event(service)
+        portVar = findport()
+        output(portVar, summary, start, end)
+        
+        # Delay for 10 minutes
+        time.sleep(10 * 60)
 
 if __name__ == '__main__':
     main()
