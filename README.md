@@ -31,9 +31,9 @@ pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-pyt
  - Modify the `screen = serial.Serial(portVar, 9600)` line to match the baud rate of your serial device.
 
 5. Run the script:
-    ```bash
-    python script.py
-    ```
+```bash
+python script.py
+```
 
 6. Follow the on-screen instructions to select the appropriate serial port where your external screen is connected.
 
