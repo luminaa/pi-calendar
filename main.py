@@ -7,7 +7,7 @@ from googleapiclient.discovery import build
 
 # Define the scopes and credentials file path
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
-CREDENTIALS_FILE = 'pi-calendar\cred.json'
+CREDENTIALS_FILE = 'cred.json'
 TOKEN_FILE = 'token.pickle'
 
 def authenticate():
