@@ -86,12 +86,11 @@ def output(portVar, summary, start, end):
 def main():
     creds = authenticate()
     service = build('calendar', 'v3', credentials=creds)
+    portVar = findport()
     
     while True:
         boole, summary, start, end = get_next_event(service)
-        portVar = findport()
         if boole:
-            print(summary, start, end)
             output(portVar, summary, start, end)
         else:
             output(portVar, "No upcoming events", "", "")
