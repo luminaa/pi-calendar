@@ -6,7 +6,7 @@ rgb_lcd lcd;
 void setup() {
     Serial.begin(9600);
     lcd.begin(16, 2);
-    lcd.write("LCD Ready");
+    lcd.write("Updating...");
 }
 
 void loop() {
