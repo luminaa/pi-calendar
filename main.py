@@ -94,7 +94,9 @@ def main():
             output(portVar, summary, start, end)
         else:
             output(portVar, "No upcoming events", "", "")
+        print("Updated")
         time.sleep(1 * 60) # Delay for 1 minute
+        print("Updating...")
 
 
 if __name__ == '__main__':
