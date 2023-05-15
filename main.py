@@ -57,13 +57,8 @@ def findport():
         print("No ports available")
         return None
 
-    val = input("Enter the port number: ")
-
-    for x in range(0, len(portsList)):
-        if portsList[x].startswith("COM" + val):
-            portVar = "COM" + val
-            return portVar
-    print("Port not found")
+    port = input("Enter port name: ") # ask user for port name
+    return port
 
 def output(portVar, summary, start, end):
     screen = serial.Serial(portVar, 9600)
