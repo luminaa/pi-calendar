@@ -18,17 +18,17 @@ pip install google-auth google-auth-oauthlib google-auth-httplib2 google-api-pyt
 1. Clone the repository or download the script files.
 
 2. Obtain the Google Calendar API credentials:
-    - Go to the [Google Cloud Console](https://console.cloud.google.com/).
-    - Create a new project or select an existing one.
-    - Enable the Google Calendar API for your project.
-    - Create credentials (OAuth client ID) and download the credentials file (JSON format).
-    - Rename the credentials file to `cred.json` and place it in the project directory.
+ - Go to the [Google Cloud Console](https://console.cloud.google.com/).
+ - Create a new project or select an existing one.
+ - Enable the Google Calendar API for your project.
+ - Create credentials (OAuth client ID) and download the credentials file (JSON format).
+ - Rename the credentials file to `cred.json` and place it in the project directory.
 
 3. Connect your external screen (e.g., an Arduino with an LCD display) to your computer via a serial connection.
 
 4. Adjust the baud rate if necessary:
-    - Open the `output()` function in the Python script.
-    - Modify the `screen = serial.Serial(portVar, 9600)` line to match the baud rate of your serial device.
+ - Open the `output()` function in the Python script.
+ - Modify the `screen = serial.Serial(portVar, 9600)` line to match the baud rate of your serial device.
 
 5. Run the script:
     ```bash
