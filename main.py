@@ -4,7 +4,7 @@ import pickle
 import serial.tools.list_ports
 import serial
 import time
-import sys
+import dateutil.parser
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
@@ -30,10 +30,13 @@ def authenticate():
     return creds
 
 def get_next_event(service):
-    now = datetime.datetime.utcnow().isoformat() + 'Z'
-    events_result = service.events().list(calendarId='primary', timeMin=now,
-                                          maxResults=1, singleEvents=True,
-                                          orderBy='startTime').execute()
+    now = datetime.datetime.utcnow()
+    end_of_week = now + datetime.timedelta(days=2)
+
+    events_result = service.events().list(calendarId='primary', timeMin=now.isoformat() + 'Z',
+                                      timeMax=end_of_week.isoformat() + 'Z',
+                                      maxResults=1, singleEvents=True,
+                                      orderBy='startTime').execute()
     events = events_result.get('items', [])
     if not events:
         return False, None, None, None
@@ -41,9 +44,19 @@ def get_next_event(service):
         event = events[0]
         start = event['start'].get('dateTime', event['start'].get('date'))
         end = event['end'].get('dateTime', event['end'].get('date'))
-        start_time = datetime.datetime.fromisoformat(start).strftime('%H:%M')
-        end_time = datetime.datetime.fromisoformat(end).strftime('%H:%M')
-        return True, event['summary'], start_time, end_time
+
+        start_time = dateutil.parser.parse(start)
+        end_time = dateutil.parser.parse(end)
+
+        formatted_start = start_time.strftime('%a %H:%M')
+        formatted_end = end_time.strftime('%H:%M')
+
+        summary = event['summary']
+        # summary = "1234567890abcdefghijklmnopqrstuvwxyz" # for debugging
+        if len(summary) > 16:
+            summary = summary[:13] + '...'
+
+        return True, summary, formatted_start, formatted_end
 
 def findport():
     ports = serial.tools.list_ports.comports()
@@ -77,11 +90,13 @@ def main():
     while True:
         boole, summary, start, end = get_next_event(service)
         portVar = findport()
-        output(portVar, summary, start, end)
-        
-        # Delay for 10 minutes
-        time.sleep(10 * 60)
-        print("10 minutes passed")
+        if boole:
+            print(summary, start, end)
+            output(portVar, summary, start, end)
+        else:
+            output(portVar, "No upcoming events", "", "")
+        time.sleep(1 * 60) # Delay for 1 minute
+
 
 if __name__ == '__main__':
     main()
