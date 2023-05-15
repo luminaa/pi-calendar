@@ -76,7 +76,7 @@ def findport():
 def output(portVar, summary, start, end):
     screen = serial.Serial(portVar, 9600)
     time.sleep(2)
-    display_text = f"{start} - {end}\n{summary}\n"
+    display_text = f"{start}-{end}\n{summary}\n"
 
     if screen.is_open:
         screen.write(display_text.encode())
