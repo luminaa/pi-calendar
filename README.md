@@ -45,4 +45,4 @@ This project utilizes the following libraries:
 
 - [Google APIs Client Library for Python](https://github.com/googleapis/google-api-python-client)
 - [python-serial](https://python-serial.readthedocs.io/)
-- [Grove - LCD RGB Backlight](https://www.arduinolibraries.info/libraries/grove-lcd-rgb-backlight)
+- [Grove - LCD RGB Backlight](https://github.com/Seeed-Studio/Grove_LCD_RGB_Backlight)
