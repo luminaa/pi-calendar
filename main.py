@@ -57,7 +57,7 @@ def findport():
         print("No ports available")
         return None
 
-    val = str(input("\nSelect PORT: COM "))
+    val = input("Enter the port number: ")
 
     for x in range(0, len(portsList)):
         if portsList[x].startswith("COM" + val):
@@ -86,6 +86,7 @@ def main():
         
         # Delay for 10 minutes
         time.sleep(10 * 60)
+        print("10 minutes passed")
 
 if __name__ == '__main__':
     main()
